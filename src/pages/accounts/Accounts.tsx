@@ -1,33 +1,38 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IState } from '../../../redux/IState';
+import { CONST_APP_COLOR_INFO } from '../../constants/const_app';
+import InfoSvg from '../../svg/InfoSvg';
 import AddAccount from './partials/AddAccount';
+import AccountsList from './partials/ListAccounts';
 import { IStateAccount } from './store/reducerAccount';
 import { IAccountInfo } from './types';
 
 interface IAccountsState {
-    accounts: IStateAccount;
 };
 interface IAccountsDispatch {};
 interface IAccountsProps extends IAccountsState, IAccountsDispatch {}
 
-const AccountsView: React.FC<IAccountsProps> = ({accounts}) => {
-    const list: IAccountInfo[] = accounts.list;
+const AccountsView: React.FC<IAccountsProps> = ({}) => {
+
+    const showAccountsInfo = () => {
+        Alert.alert("What is account?", "Consider it as your virtual back account, where you can split your total balance into multiple 'SPLITS'");
+    }
+
     return(
         <View style={styles.container}>
-            <Text style={styles.heading}>Accounts</Text>
-            <AddAccount/>
-            <View>
-                {list.map((acct: IAccountInfo, _key: number) => {
-                    return (
-                        <View key={_key}>
-                            <Text>{acct.title}</Text>
-                        </View>
-                    )
-                })}
+            <View style={styles.heading}>
+                <Text style={styles.headingText}>Accounts</Text>
+                <TouchableWithoutFeedback onPress={showAccountsInfo}>
+                    <View>
+                        <InfoSvg width={20} height={20} color={CONST_APP_COLOR_INFO}/>
+                    </View>
+                </TouchableWithoutFeedback>
             </View>
+            <AddAccount/>
+            <AccountsList/>
         </View>
     )
 } 
@@ -43,16 +48,20 @@ const styles = StyleSheet.create({
         // flexDirection: 'row'
 	},
     heading: {
+        flexDirection: 'row',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingBottom: 15
+    },
+    headingText: {
         fontSize: 25,
         fontWeight: 'bold',
-        width: '100%',
-        textAlign: 'center',
-        paddingBottom: 15
+        marginRight: 10
     }
 });
 
 const mapState = (state: IState): IAccountsState => ({
-    accounts: state.account
 });
 const mapDispatch = (dispatch: Dispatch): IAccountsDispatch => ({});
 const Accounts = connect(mapState, mapDispatch)(AccountsView);

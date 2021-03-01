@@ -5,7 +5,7 @@ import { CONST_APP_COLOR_LIGHT_BG, CONST_TOP_NAV_HEIGHT } from "../../constants/
 const TopNav = () => {
     return (
         <View style={styles.container}>
-            <Text>TopNav</Text>
+            <Text>MONEY SPLIT +</Text>
         </View>
     );
 }

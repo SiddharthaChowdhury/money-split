@@ -1,0 +1,81 @@
+import React from 'react';
+import { ScrollView, View , Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { IState } from '../../../../redux/IState';
+import { IStateAccount } from '../store/reducerAccount';
+import { IAccountInfo } from '../types';
+
+interface IAccountsState {
+    accounts: IStateAccount;
+};
+interface IAccountsDispatch {};
+interface IAccountsProps extends IAccountsState, IAccountsDispatch {}
+
+const AccountsListView: React.FC<IAccountsProps> = ({accounts}) => {
+    const list: IAccountInfo[] = accounts.list;
+    return(
+        <View style={styles.container}>
+            <Text >Existing accounts</Text>
+            <ScrollView style={styles.scrollableView}>
+                {list.map((acct: IAccountInfo, _key: number) => {
+                    return (
+                        <TouchableWithoutFeedback key={_key} onPress={() => {alert('Selected')}}>
+                            <View style={styles.item}>
+                                <Text style={styles.itemTitle}>{acct.title}</Text>
+                                <Text style={styles.itemMeta} >Amount: {acct.totalAmount}</Text>
+                                <Text style={styles.itemMeta} >Splits: {acct.splits.length}</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    )
+                })}
+            </ScrollView>
+        </View>
+    )
+} 
+
+const styles = StyleSheet.create({
+	container: {
+        // flex: 1,
+        width: '100%',
+        height: '81%',
+        marginTop: 15,
+        // padding: 15
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // flexDirection: 'row'
+        
+	},
+    scrollableView: {
+        maxHeight: '100%',
+        // backgroundColor: 'grey',
+    },
+
+    item: {
+        width: '100%',
+        padding: 5,
+        alignItems: 'center',
+        // borderWidth: 2,
+        marginBottom: 1,
+        height: 40,
+        backgroundColor: '#fdf8ee',
+        flexDirection: 'row'
+    },
+
+    itemMeta: {
+        marginLeft: 10,
+        fontSize: 10
+    },
+
+    itemTitle: {
+        marginLeft: 10
+    }
+});
+
+const mapState = (state: IState): IAccountsState => ({
+    accounts: state.account
+});
+const mapDispatch = (dispatch: Dispatch): IAccountsDispatch => ({});
+const AccountsList = connect(mapState, mapDispatch)(AccountsListView);
+
+export default AccountsList;
