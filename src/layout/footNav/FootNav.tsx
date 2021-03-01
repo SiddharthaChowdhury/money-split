@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Link } from "react-router-native";
+import { CONST_BOT_NAV_HEIGHT, CONST_APP_COLOR_LIGHT_BG } from "../../constants/const_app";
 
 const FootNav = () => {
     return (
-        <View>
+        <View style={styles.container}>
             <Link
                 to="/ac"
                 underlayColor="#f0f4f7"
@@ -22,5 +23,16 @@ const FootNav = () => {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+	container: {
+        width: '100%',
+        height: CONST_BOT_NAV_HEIGHT,
+        backgroundColor: CONST_APP_COLOR_LIGHT_BG,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row'
+	},
+});
 
 export default FootNav;

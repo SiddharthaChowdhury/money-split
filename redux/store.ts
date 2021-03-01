@@ -1,9 +1,14 @@
-import { createStore, applyMiddleware, compose, Action } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { mockAccounts } from './mocks/mockAccounts';
 import rootReducer from "./rootReducer";
 
 const middleware: any = [
 ];
-const initialState = {};
+const initialState = {
+  account: {
+    ...mockAccounts
+  }
+};
 const composeEnhancers =
   (process.env.NODE_ENV !== 'production' &&
     typeof window !== 'undefined' &&
