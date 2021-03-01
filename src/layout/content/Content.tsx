@@ -18,9 +18,9 @@ const styles = StyleSheet.create({
 	container: {
         width: '100%',
         height: utilApp.getDimension().contentHeight,
-        backgroundColor: 'grey',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: '#fff',
+        // alignItems: 'center',
+        // justifyContent: 'center',
         flexDirection: 'row'
 	},
 });
