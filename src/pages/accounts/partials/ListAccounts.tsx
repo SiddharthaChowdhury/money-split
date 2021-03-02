@@ -21,8 +21,8 @@ const AccountsListView: React.FC<IAccountsProps> = ({accounts, onSetActive}) => 
     let history = useHistory();
 
     const handleAccountClick = (acctId: string) => {
-        history.push('/');
         onSetActive(acctId);
+        history.push('/splits');
     }
 
     return(

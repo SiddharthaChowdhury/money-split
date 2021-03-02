@@ -14,6 +14,12 @@ export const mockAccounts: IStateAccount = {
         },
         {
             id: "12",
+            totalAmount: 100,
+            title: "Dummy with val",
+            splits: []
+        },
+        {
+            id: "13",
             totalAmount: 0,
             title: "Dummy",
             splits: []

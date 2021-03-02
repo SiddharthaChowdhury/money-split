@@ -14,6 +14,10 @@ class UtilApp {
             contentHeight: (totalHeight - (StatusBar.currentHeight || 20) - CONST_TOP_NAV_HEIGHT - CONST_BOT_NAV_HEIGHT)
         }
     }
+
+    public getPercentage = (val: number, total: number): number => {
+        return ((val * 100) / total) || 0;
+    }
 }
 
 export interface IUtilAppDiamension {

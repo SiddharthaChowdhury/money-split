@@ -3,6 +3,7 @@ import { View, StyleSheet} from "react-native";
 import { Route } from "react-router-native";
 import Accounts from "../../pages/accounts/Accounts";
 import Home from "../../pages/home/Home";
+import Splits from "../../pages/splits/Splits";
 import utilApp from "../../utils/utilApp";
 
 const Content = () => {
@@ -10,6 +11,7 @@ const Content = () => {
         <View style={styles.container}>
             <Route exact path="/" component={Home} />
             <Route exact path="/ac" component={Accounts} />
+            <Route exact path="/splits" component={Splits} />
         </View>
     );
 }
