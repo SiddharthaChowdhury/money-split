@@ -1,26 +1,37 @@
 import React from 'react';
 import { ScrollView, View , Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { useHistory } from 'react-router-native';
+import { Action, Dispatch } from 'redux';
 import { IState } from '../../../../redux/IState';
+import { acAccountSetActive } from '../store/actionAccount';
 import { IStateAccount } from '../store/reducerAccount';
 import { IAccountInfo } from '../types';
 
 interface IAccountsState {
     accounts: IStateAccount;
 };
-interface IAccountsDispatch {};
+interface IAccountsDispatch {
+    onSetActive: (id: string) => Action
+};
 interface IAccountsProps extends IAccountsState, IAccountsDispatch {}
 
-const AccountsListView: React.FC<IAccountsProps> = ({accounts}) => {
+const AccountsListView: React.FC<IAccountsProps> = ({accounts, onSetActive}) => {
     const list: IAccountInfo[] = accounts.list;
+    let history = useHistory();
+
+    const handleAccountClick = (acctId: string) => {
+        history.push('/');
+        onSetActive(acctId);
+    }
+
     return(
         <View style={styles.container}>
             <Text >Existing accounts</Text>
             <ScrollView style={styles.scrollableView}>
                 {list.map((acct: IAccountInfo, _key: number) => {
                     return (
-                        <TouchableWithoutFeedback key={_key} onPress={() => {alert('Selected')}}>
+                        <TouchableWithoutFeedback key={_key} onPress={() => handleAccountClick(acct.id)}>
                             <View style={styles.item}>
                                 <Text style={styles.itemTitle}>{acct.title}</Text>
                                 <Text style={styles.itemMeta} >Amount: {acct.totalAmount}</Text>
@@ -75,7 +86,9 @@ const styles = StyleSheet.create({
 const mapState = (state: IState): IAccountsState => ({
     accounts: state.account
 });
-const mapDispatch = (dispatch: Dispatch): IAccountsDispatch => ({});
+const mapDispatch = (dispatch: Dispatch): IAccountsDispatch => ({
+    onSetActive: (id: string) => dispatch(acAccountSetActive(id))
+});
 const AccountsList = connect(mapState, mapDispatch)(AccountsListView);
 
 export default AccountsList;

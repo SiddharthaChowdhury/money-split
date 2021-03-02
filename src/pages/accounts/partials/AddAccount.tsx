@@ -1,12 +1,29 @@
 import React from 'react';
-import { StyleSheet, TextInput, View, Text, TouchableWithoutFeedback, Alert } from 'react-native';
+import { StyleSheet, Keyboard, TextInput, View, Text, TouchableWithoutFeedback, Alert } from 'react-native';
+import { connect } from 'react-redux';
+import { Action, Dispatch } from 'redux';
 import { CONST_APP_COLOR_LIGHT_BG } from '../../../constants/const_app';
+import { acAccountAddNew } from '../store/actionAccount';
+import { IAccountInfo } from '../types';
+interface IAddAccountDispatch {
+    onNewAccount: (account: IAccountInfo) => Action;
+}
+interface IAddAccountProps extends IAddAccountDispatch {}
 
-const AddAccount: React.FC<any> = () => {
+const AddAccountView: React.FC<IAddAccountProps> = ({onNewAccount}) => {
     const [value, onChangeText] = React.useState('');
 
     const onConfirmAccountCreation = () => {
-        console.log("New Account is created")
+        alert("New account is created");
+        const id = + new Date();
+        onNewAccount({
+            id: id.toString(),
+            totalAmount: 0,
+            title: value,
+            splits: []
+        });
+        onChangeText('');
+        Keyboard.dismiss();
     }
 
     const handleCreateAccount = () => {
@@ -84,5 +101,11 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     }
 });
+
+const mapDispatch = (dispatch: Dispatch): IAddAccountDispatch => ({
+    onNewAccount: (account: IAccountInfo) => dispatch(acAccountAddNew(account))
+})
+
+const AddAccount = connect(null, mapDispatch)(AddAccountView);
 
 export default AddAccount;

@@ -14,7 +14,16 @@ const reducerAccount = (state: IStateAccount = initial, action: IActionAccount):
     switch(action.type) {
         case TypeActionAccount.SetActive: 
             return {
-                ...state
+                ...state,
+                activeId: action.accountId
+            };
+        case TypeActionAccount.New:
+            return {
+                ...state,
+                list: [
+                    ...state.list,
+                    action.account!
+                ]
             };
         default:
             return state;

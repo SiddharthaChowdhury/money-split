@@ -7,12 +7,10 @@ import { CONST_APP_COLOR_INFO } from '../../constants/const_app';
 import InfoSvg from '../../svg/InfoSvg';
 import AddAccount from './partials/AddAccount';
 import AccountsList from './partials/ListAccounts';
-import { IStateAccount } from './store/reducerAccount';
-import { IAccountInfo } from './types';
-
 interface IAccountsState {
 };
-interface IAccountsDispatch {};
+interface IAccountsDispatch {
+};
 interface IAccountsProps extends IAccountsState, IAccountsDispatch {}
 
 const AccountsView: React.FC<IAccountsProps> = ({}) => {
@@ -63,7 +61,8 @@ const styles = StyleSheet.create({
 
 const mapState = (state: IState): IAccountsState => ({
 });
-const mapDispatch = (dispatch: Dispatch): IAccountsDispatch => ({});
+const mapDispatch = (dispatch: Dispatch): IAccountsDispatch => ({
+});
 const Accounts = connect(mapState, mapDispatch)(AccountsView);
 
 export default Accounts;
