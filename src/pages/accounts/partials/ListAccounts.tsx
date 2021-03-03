@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
 	},
     scrollableView: {
         maxHeight: '100%',
+        marginTop: 8,
         // backgroundColor: 'grey',
     },
 

@@ -1,8 +1,7 @@
 import React from 'react';
-import { ScrollView, View , Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { ScrollView, View , Text, StyleSheet, TouchableWithoutFeedback, Pressable } from 'react-native';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-native';
-import { Action, Dispatch } from 'redux';
+import { Dispatch } from 'redux';
 import { IState } from '../../../../redux/IState';
 import { CONST_APP_COLOR_UNCATEGORISED } from '../../../constants/const_app';
 import utilApp from '../../../utils/utilApp';
@@ -55,12 +54,14 @@ const SplitsListView: React.FC<IAccountsProps> = (props) => {
 
     return(
         <View style={styles.container}>
-            <Text >Account Splits</Text>
+            <Text >Account splits</Text>
             {splits.length === 0
             ? (
-                <View style={styles.item}>
-                    <Text>No splits exists at the moment</Text>
-                </View>
+                <ScrollView style={styles.scrollableView}>
+                    <View style={styles.item}>
+                        <Text>No splits exists at the moment</Text>
+                    </View>
+                </ScrollView>
             )
             : (
                 <ScrollView style={styles.scrollableView}>
@@ -98,7 +99,8 @@ const styles = StyleSheet.create({
 	},
     scrollableView: {
         width: '100%',
-        maxHeight: '100%',
+        height: '85%',
+        marginTop: 8,
         // backgroundColor: 'grey',
     },
     item: {

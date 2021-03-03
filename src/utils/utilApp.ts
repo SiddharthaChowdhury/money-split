@@ -18,6 +18,16 @@ class UtilApp {
     public getPercentage = (val: number, total: number): number => {
         return ((val * 100) / total) || 0;
     }
+
+    public getRandomColor = () => {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+      
 }
 
 export interface IUtilAppDiamension {
