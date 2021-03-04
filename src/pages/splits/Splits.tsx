@@ -51,7 +51,7 @@ const SplitsView: React.FC<ISplitsProps> = ({account}) => {
             <Pressable onPress={() => setOpenCustomizeModal(true)} style={styles.floatingCustomize}>
                 <EditSvg width={20} height={20} />
             </Pressable>
-            <SplitsList account={activeAccount} splits={splits}/>
+            <SplitsList/>
         </View>
     );
 };

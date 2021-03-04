@@ -1,7 +1,9 @@
 import React from "react";
-import { Modal, Alert, View, Pressable, Text, StyleSheet } from "react-native";
+import { Modal, View, Pressable, Text, StyleSheet } from "react-native";
 import { CONST_APP_COLOR_INFO } from "../../../constants/const_app";
+import { ISplitInfo } from "../../accounts/types";
 import SplitAddForm from "../partials/SplitAddForm";
+import SplitsList from "../partials/SplitsList";
 
 interface ICustomizeSplitProps {
     open?: boolean;
@@ -9,13 +11,14 @@ interface ICustomizeSplitProps {
 }
 
 const CustomizeSplitModal: React.FC<ICustomizeSplitProps> = ({open, onModalSwitch}) => {
+    const [selectedSplit, setSplit] = React.useState<ISplitInfo | undefined>();
+
     return (
         <Modal
             animationType="slide"
             transparent={true}
             visible={open}
             onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
                 onModalSwitch(!open);
             }}
         >
@@ -25,12 +28,16 @@ const CustomizeSplitModal: React.FC<ICustomizeSplitProps> = ({open, onModalSwitc
                         <Text style={styles.modalText}>Customize splits</Text>
                         <Pressable
                             style={styles.buttonClose}
-                            onPress={() => onModalSwitch(!open)}
+                            onPress={() => {
+                                onModalSwitch(!open)
+                                setSplit(undefined);
+                            }}
                         >
                             <Text style={styles.textStyle}>Close</Text>
                         </Pressable>
                     </View>
-                    <SplitAddForm/>
+                    <SplitAddForm selectedSplit={selectedSplit}/>
+                    <SplitsList onSplitClicked={setSplit}/>
                 </View>
             </View>
         </Modal>
@@ -42,7 +49,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        // marginTop: 22
         
     },
     modalView: {
@@ -50,7 +56,6 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 20,
         padding: 15,
-        // alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -81,8 +86,6 @@ const styles = StyleSheet.create({
         fontSize: 10,
     },
     modalText: {
-        // marginBottom: 15,
-        // textAlign: "center"
         fontSize: 18
     }
 });

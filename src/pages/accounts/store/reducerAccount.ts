@@ -25,8 +25,30 @@ const reducerAccount = (state: IStateAccount = initial, action: IActionAccount):
                     action.account!
                 ]
             };
+        case TypeActionAccount.UpdateSplit:
+            return updateAccountSplits(state, action);
         default:
             return state;
+    }
+}
+
+const updateAccountSplits = (state: IStateAccount = initial, action: IActionAccount): IStateAccount => {
+    const updateAccountList = state.list.map((acct: IAccountInfo) => {
+        if(acct.id === action.accountId) {
+            return {
+                ...acct,
+                splits: [
+                    ...action.splits!
+                ]
+            }
+        }
+
+        return acct;
+    });
+
+    return {
+        ...state,
+        list: updateAccountList.filter((acct: IAccountInfo | null) => !!acct)
     }
 }
 

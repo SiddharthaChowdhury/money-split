@@ -3,26 +3,27 @@ import { ScrollView, View , Text, StyleSheet, TouchableWithoutFeedback, Pressabl
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IState } from '../../../../redux/IState';
-import { CONST_APP_COLOR_UNCATEGORISED } from '../../../constants/const_app';
+import { CONST_APP_COLOR_SURPLUS } from '../../../constants/const_app';
 import utilApp from '../../../utils/utilApp';
+import { IStateAccount } from '../../accounts/store/reducerAccount';
 import { IAccountInfo, ISplitInfo } from '../../accounts/types';
 
 interface IAccountsState {
+    accounts: IStateAccount
 };
 interface IAccountsDispatch {
     // onSetActive: (id: string) => Action
 };
 interface IAccountsProps extends IAccountsState, IAccountsDispatch {
-    account: IAccountInfo;
-    splits: ISplitInfo[];
+    onSplitClicked?: (split: ISplitInfo) => void;
 }
 
-const SplitsListView: React.FC<IAccountsProps> = (props) => {
-    const {account} = props;
-    const [splits, setSplits] = React.useState<ISplitInfo[]>(props.splits); 
+const SplitsListView: React.FC<IAccountsProps> = ({accounts, onSplitClicked}) => {
+    const account = accounts.list.find((acct: IAccountInfo) => acct.id === accounts.activeId);
+    const [splits, setSplits] = React.useState<ISplitInfo[]>(account?.splits || []); 
 
-    const getUnCategorisedSplit = () => {
-        if(account.totalAmount === 0) {
+    const getSurplusSplit = () => {
+        if(!account || (account && account.totalAmount === 0)) {
             return;
         }
         const splitSum = splits.reduce((accumulator: number, split: ISplitInfo) => {
@@ -34,14 +35,14 @@ const SplitsListView: React.FC<IAccountsProps> = (props) => {
         if(diffPercentage > 0) {
             setSplits((prevSplits: ISplitInfo[]) => {
                 return [
-                    ...prevSplits,
                     {
-                        id: '_',
+                        id: '0',
                         amount: difference,
-                        title: 'Uncategorised',
-                        color: CONST_APP_COLOR_UNCATEGORISED,
+                        title: 'Surplus available',
+                        color: CONST_APP_COLOR_SURPLUS,
                         percentage: diffPercentage
-                    }
+                    },
+                    ...prevSplits,
                 ]
             })
         };
@@ -49,7 +50,11 @@ const SplitsListView: React.FC<IAccountsProps> = (props) => {
     };
 
     React.useEffect(() => {
-        getUnCategorisedSplit();
+        setSplits(account?.splits || [])
+    }, [accounts])
+
+    React.useEffect(() => {
+        getSurplusSplit();
     }, [splits])
 
     return(
@@ -66,15 +71,13 @@ const SplitsListView: React.FC<IAccountsProps> = (props) => {
             : (
                 <ScrollView style={styles.scrollableView}>
                 {splits.map((split: ISplitInfo, _key: number) => {
+                    const isSurplus = split.id === "0";
                     return (
-                        // <TouchableWithoutFeedback key={_key} onPress={() => handleAccountClick(acct.id)}>
-                            <View style={styles.item} key={_key}>
-                                <View style={[styles.itemColor, {backgroundColor: `${split.color}`}]}/>
-                                <Text >{split.percentage}%</Text>
-                                <Text style={styles.itemTitle}>{split.title}</Text>
-                                
-                            </View>
-                        // </TouchableWithoutFeedback>
+                        <Pressable style={isSurplus ? [styles.item, styles.itemSurplus] : styles.item} key={_key} onPress={() => onSplitClicked && !isSurplus ? onSplitClicked(split): {}}>
+                            <View style={[styles.itemColor, {backgroundColor: `${split.color}`}]}/>
+                            <Text >{split.percentage}%</Text>
+                            <Text style={styles.itemTitle}>{split.title}</Text>
+                        </Pressable>
                     )
                 })}
                 </ScrollView>
@@ -99,7 +102,7 @@ const styles = StyleSheet.create({
 	},
     scrollableView: {
         width: '100%',
-        height: '85%',
+        height: '45%',
         marginTop: 8,
         // backgroundColor: 'grey',
     },
@@ -111,7 +114,11 @@ const styles = StyleSheet.create({
         marginBottom: 1,
         height: 50,
         backgroundColor: '#fdf8ee',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderRadius: 3
+    },
+    itemSurplus: {
+        backgroundColor: CONST_APP_COLOR_SURPLUS,
     },
 
     itemColor: {
